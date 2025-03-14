@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:jump}",
+            "name": "Debug jump",
+            "program": "${workspaceFolder:jump}/.build/debug/jump",
+            "preLaunchTask": "swift: Build Debug jump"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:jump}",
+            "name": "Release jump",
+            "program": "${workspaceFolder:jump}/.build/release/jump",
+            "preLaunchTask": "swift: Build Release jump"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:jump}",
+            "name": "Debug Jump",
+            "program": "${workspaceFolder:jump}/.build/debug/Jump",
+            "preLaunchTask": "swift: Build Debug Jump"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:jump}",
+            "name": "Release Jump",
+            "program": "${workspaceFolder:jump}/.build/release/Jump",
+            "preLaunchTask": "swift: Build Release Jump"
+        }
+    ]
+}
