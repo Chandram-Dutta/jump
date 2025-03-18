@@ -12,13 +12,20 @@ struct App {
         var body: Body = Body(font: jetbrainsMonoFont)
 
         while !WindowShouldClose() {
-            ClearBackground(Colors.darkBlue)
+            let deltaTime = GetFrameTime()
+
+            // Update
+            body.update(deltaTime)
+
+            // Draw
             BeginDrawing()
-
+            ClearBackground(Colors.darkBlue)
             body.draw()
-
             EndDrawing()
         }
+
+        // Clean up resources
+        UnloadFont(jetbrainsMonoFont)
         CloseWindow()
     }
 }
@@ -33,9 +40,12 @@ struct Body {
         self.header = Header(font: font)
     }
 
-    mutating func draw() {
+    mutating func update(_ deltaTime: Float) {
+        jumpingCircle.update(deltaTime)
+    }
+
+    func draw() {
         header.draw()
-        jumpingCircle.update()
         jumpingCircle.draw()
     }
 }

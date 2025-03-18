@@ -1,4 +1,6 @@
 import raylib
+import Foundation
+import raylib
 
 struct JumpingCircle {
     var circleY: Float = Float(GetScreenHeight()) - 50
@@ -12,13 +14,13 @@ struct JumpingCircle {
     let horizontalAcceleration: Float = 0.5
     let friction: Float = 0.92
 
-    mutating func update() {
+    mutating func update(_ deltaTime: Float) {
         if IsKeyPressed(Int32(KEY_W.rawValue)) && circleY >= Float(GetScreenHeight()) - radius {
             velocity = jumpForce
         }
 
-        velocity += gravity
-        circleY += velocity
+        velocity += gravity * deltaTime * 60.0
+        circleY += velocity * deltaTime * 60.0
 
         if circleY > Float(GetScreenHeight()) - radius {
             circleY = Float(GetScreenHeight()) - radius
@@ -39,9 +41,9 @@ struct JumpingCircle {
             horizontalVelocity += horizontalAcceleration
         }
 
-        horizontalVelocity *= 0.98
+        horizontalVelocity *= pow(0.98, deltaTime * 60.0)
 
-        circleX += horizontalVelocity
+        circleX += horizontalVelocity * deltaTime * 60.0
 
         if circleX < radius {
             circleX = radius
