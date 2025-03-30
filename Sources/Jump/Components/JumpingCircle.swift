@@ -1,4 +1,3 @@
-import raylib
 import Foundation
 import raylib
 
@@ -13,17 +12,34 @@ struct JumpingCircle {
     let bounceFactor: Float = 0.6
     let horizontalAcceleration: Float = 0.5
     let friction: Float = 0.92
+    var justJumped: Bool = false
 
     mutating func update(_ deltaTime: Float) {
-        if IsKeyPressed(Int32(KEY_W.rawValue)) && circleY >= Float(GetScreenHeight()) - radius {
-            velocity = jumpForce
+
+        let jumpRequested = IsKeyDown(Int32(KEY_W.rawValue))
+        let moveLeft = IsKeyDown(Int32(KEY_A.rawValue))
+        let moveRight = IsKeyDown(Int32(KEY_D.rawValue))
+
+        if moveLeft {
+            horizontalVelocity -= horizontalAcceleration
+        }
+        if moveRight {
+            horizontalVelocity += horizontalAcceleration
         }
 
+        horizontalVelocity *= pow(0.98, deltaTime * 60.0)
+
+        circleX += horizontalVelocity * deltaTime * 60.0
+
         velocity += gravity * deltaTime * 60.0
+
         circleY += velocity * deltaTime * 60.0
 
-        if circleY > Float(GetScreenHeight()) - radius {
+        var isOnGround = false
+
+        if circleY >= Float(GetScreenHeight()) - radius {
             circleY = Float(GetScreenHeight()) - radius
+            isOnGround = true
 
             if velocity > 1 {
                 velocity = -velocity * bounceFactor
@@ -32,18 +48,10 @@ struct JumpingCircle {
             }
 
             horizontalVelocity *= friction
-        }
+            justJumped = false
+        } else {
 
-        if IsKeyDown(Int32(KEY_A.rawValue)) {
-            horizontalVelocity -= horizontalAcceleration
         }
-        if IsKeyDown(Int32(KEY_D.rawValue)) {
-            horizontalVelocity += horizontalAcceleration
-        }
-
-        horizontalVelocity *= pow(0.98, deltaTime * 60.0)
-
-        circleX += horizontalVelocity * deltaTime * 60.0
 
         if circleX < radius {
             circleX = radius
@@ -52,6 +60,11 @@ struct JumpingCircle {
         if circleX > Float(GetScreenWidth()) - radius {
             circleX = Float(GetScreenWidth()) - radius
             horizontalVelocity = -horizontalVelocity * 0.5
+        }
+
+        if jumpRequested && isOnGround && !justJumped {
+            velocity = jumpForce
+            justJumped = true
         }
     }
 
